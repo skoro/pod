@@ -1,6 +1,7 @@
 {
     "name": "skoro/pod",
-    "description": "Picture of the day",
+    "description": "Get Picture of the day (POD) from different sources.",
+    "keywords": ["pod", "picture", "nasa"],
     "type": "library",
     "authors": [
         {
@@ -8,7 +9,7 @@
             "email": "skorobogatko.oleksii@gmail.com"
         }
     ],
-    "require": {
+    "suggest": {
         "skoro/curl": "dev-master"
     },
     "autoload": {
