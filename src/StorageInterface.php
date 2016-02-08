@@ -22,6 +22,6 @@ interface StorageInterface
      * @param integer $date date in format YYYY-MM-DD
      * @return Pod|null
      */
-    public function fromDate($date);
+    public function loadFromDate($date);
 
 }

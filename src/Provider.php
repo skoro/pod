@@ -96,7 +96,7 @@ abstract class Provider
                         ->format('Y-m-d');
         }
         
-        if (!($pod = $storage->fromDate($date))) {
+        if (!($pod = $storage->loadFromDate($date))) {
             if (!($http = $this->getHttpClient())) {
                 throw new ProviderException('No http client defined.');
             }
