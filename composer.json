@@ -1,0 +1,19 @@
+{
+    "name": "skoro/pod",
+    "description": "Picture of the day",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Skorobogatko Alexei",
+            "email": "skorobogatko.oleksii@gmail.com"
+        }
+    ],
+    "require": {
+        "skoro/curl": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "skoro\\pod\\": "src"
+        }
+    }
+}
