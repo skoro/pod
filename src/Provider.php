@@ -131,6 +131,6 @@ abstract class Provider
      * @throws ProviderException see descent classes.
      * @return Pod
      */
-    protected function remote($date = null);
+    abstract protected function remote($date = null);
     
 }
