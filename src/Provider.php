@@ -96,7 +96,7 @@ abstract class Provider
                         ->format('Y-m-d');
         }
         
-        if (!($pod = $storage->loadFromDate($date))) {
+        if (!($pod = $storage->loadFromDate($this->name, $date))) {
             if (!($http = $this->getHttpClient())) {
                 throw new ProviderException('No http client defined.');
             }
@@ -108,6 +108,12 @@ abstract class Provider
         return $pod;
     }
     
+    /**
+     * @param string $title
+     * @param string $imageUrl
+     * @param string $desc
+     * @return Pod
+     */
     public function createPod($title, $imageUrl, $desc)
     {
         $pod = new Pod();
@@ -121,9 +127,10 @@ abstract class Provider
     /**
      * Fetch picture from remote source.
      * Descent classes must implements this method.
-     * @param integer $daysAgo
+     * @param string $date optional, fetch remote POD for specific date in format YYYY-MM-DD.
+     * @throws ProviderException see descent classes.
      * @return Pod
      */
-    protected function remote($daysAgo = null);
+    protected function remote($date = null);
     
 }

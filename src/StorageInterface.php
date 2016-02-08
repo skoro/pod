@@ -19,9 +19,10 @@ interface StorageInterface
     
     /**
      * Get Pod entity from defined date.
+     * @param string $name provider name.
      * @param integer $date date in format YYYY-MM-DD
      * @return Pod|null
      */
-    public function loadFromDate($date);
+    public function loadFromDate($name, $date);
 
 }

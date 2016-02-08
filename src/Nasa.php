@@ -14,17 +14,47 @@ namespace skoro\pod;
 class Nasa extends Provider
 {
 
-    const POD_API = '';
+    const POD_API = 'https://api.nasa.gov/planetary/apod';
+    
+    /**
+     * @var string
+     */
+    protected $apiKey;
 
+    /**
+     * @param string $apiKey
+     */
     public function __construct($apiKey)
     {
+        $this->apiKey = $apiKey;
         parent::__construct('nasa');
     }
     
-    protected function remote($daysAgo = null)
+    /**
+     * @inheritdoc
+     */
+    protected function remote($date = null)
     {
-        $url = static::POD_API . '?' . http_build_query(['api_key' => $this->apiKey]);
-        $response = $this->httpClient->get($url);
+        $query = [
+            'api_key' => $this->apiKey,
+        ];
+        if ($date) {
+            $query['date'] = $date;
+        }
+        $url = static::POD_API . '?' . http_build_query($query);
+        
+        try {
+            $response = $this->httpClient->get($url);
+        }
+        catch (\Exception $e) {
+            throw new ProviderException($e->getMessage());
+        }
+        
+        if (($data = json_decode($response)) === null) {
+            throw new ProviderException('Response is not json data.');
+        }
+        
+        return $this->createPod($data->title, $data->url, $data->explanation);
     }
 
 }
