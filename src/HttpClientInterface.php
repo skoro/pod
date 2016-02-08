@@ -1,4 +1,10 @@
 <?php
+/**
+ * @author Skorobogatko Alexei <skorobogatko.alexei@gmail.com>
+ * @copyright 2016
+ * @version $Id$
+ * @since 1.0.0
+ */
 
 namespace skoro\pod;
 
@@ -7,8 +13,7 @@ interface HttpClientInterface
 
     /**
      * Performs http GET request.
-     * @return array on success returns array with two elements: 'content-type',
-     *               'response'.
+     * @return string
      */
     public function get($url);
 
