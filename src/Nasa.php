@@ -14,6 +14,9 @@ namespace skoro\pod;
 class Nasa extends Provider
 {
 
+    /**
+     * @link https://api.nasa.gov/api.html#apod
+     */
     const POD_API = 'https://api.nasa.gov/planetary/apod';
     
     /**
