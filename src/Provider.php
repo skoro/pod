@@ -111,7 +111,7 @@ abstract class Provider
      * @param string $desc
      * @return Pod
      */
-    public function createPod($title, $imageUrl, $desc)
+    public function createPod($title = '', $imageUrl = '', $desc = '')
     {
         $pod = new Pod();
         $pod->title = $title;
