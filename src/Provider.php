@@ -122,6 +122,26 @@ abstract class Provider
     }
     
     /**
+     * Create DOM document instance from html text.
+     * @param string $html
+     * @throws ProviderException when html cannot be parsed.
+     * @return DOMDocument
+     */
+    public function createDomDocument($html)
+    {
+        libxml_disable_entity_loader(true);
+        libxml_use_internal_errors(true);
+        
+        $document = new DOMDocument();
+        $status = $document->loadHTML('<?xml encoding="utf-8"?>' . $html);
+        if (!$status) {
+            throw new ProviderException('Cannot parse html.');
+        }
+        
+        return $document;
+    }
+    
+    /**
      * Fetch picture from remote source.
      * Descent classes must implements this method.
      * @param string $date optional, fetch remote POD for specific date in format YYYY-MM-DD.
