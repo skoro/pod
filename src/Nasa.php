@@ -46,13 +46,7 @@ class Nasa extends Provider
         }
         $url = static::POD_API . '?' . http_build_query($query);
         
-        try {
-            $response = $this->httpClient->get($url);
-        }
-        catch (\Exception $e) {
-            throw new ProviderException($e->getMessage());
-        }
-        
+        $response = $this->httpRequest($url);
         if (($data = json_decode($response)) === null) {
             throw new ProviderException('Response is not json data.');
         }

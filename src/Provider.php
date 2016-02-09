@@ -97,9 +97,6 @@ abstract class Provider
         }
         
         if (!($pod = $storage->loadFromDate($this->name, $date))) {
-            if (!($http = $this->getHttpClient())) {
-                throw new ProviderException('No http client defined.');
-            }
             $pod = $this->remote($daysAgo ? $date : null);
             $pod->date = $date;
             $storage->save($pod);
@@ -132,5 +129,21 @@ abstract class Provider
      * @return Pod
      */
     abstract protected function remote($date = null);
+    
+    /**
+     * Performs http GET request.
+     * @param string $url
+     * @throws \LogicException when no http client attached to provider.
+     * @throws \Exception when any http client exception occuried.
+     * @return string
+     */
+    protected function httpRequest($url)
+    {
+        if (!($http = $this->getHttpClient())) {
+            throw new \LogicException('No http client defined.');
+        }
+        
+        return $this->httpClient->get($url);
+    }
     
 }
