@@ -50,6 +50,11 @@ class NationalGeographic extends Provider
         return $pod;
     }
     
+    /**
+     * Picture title.
+     * @param DOMDocument $document
+     * @return string
+     */
     protected function getPictureTitle(DOMDocument $document)
     {
         if (!($elem = $document->querySelector('#page_head h1'))) {
@@ -58,6 +63,11 @@ class NationalGeographic extends Provider
         return $elem->textContent;
     }
     
+    /**
+     * Get picture direct link.
+     * @param DOMDocument $document
+     * @return string
+     */
     protected function getPictureUrl(DOMDocument $document)
     {
         if (!($elem = $document->querySelector('#content_top .primary_photo img'))) {
