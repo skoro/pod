@@ -76,8 +76,22 @@ class NationalGeographic extends Provider
         return '';
     }
     
+    /**
+     * Get url of picture of the day page.
+     * @return string
+     */
     protected function getCanonicalUrl(DOMDocument $document)
     {
+        $url = '';
+        $elements = $document->getElementsByTagName('link');
+        foreach ($elements as $elem) {
+            $rel = $elem->getAttribute('rel');
+            if ($rel == 'canonical') {
+                $url = $elem->getAttribute('href');
+                break;
+            }
+        }
+        return $url;
     }
     
 }
