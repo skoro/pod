@@ -70,14 +70,30 @@ class NationalGeographic extends Provider
         return $src;
     }
 
+    /**
+     * Get picture text.
+     * @param DOMDocument $document
+     * @return string
+     */
     protected function getPictureInfo(DOMDocument $document)
     {
-        $elem = $document->querySelector('#caption');
-        return '';
+        $caption = $document->getElementById('caption');
+        $text = '';
+        if ($caption && $caption->hasChildNodes()) {
+            foreach ($caption->childNodes as $child) {
+                // Picture description in <p> tags without any attributes (classes, styles, etc).
+                if ($child->nodeType !== XML_TEXT_NODE && $child->tagName == 'p'
+                    && $child->attributes->length == 0) {
+                    $text .= $child->textContent;
+                }
+            }
+        }
+        return trim($text);
     }
     
     /**
      * Get url of picture of the day page.
+     * @param DOMDocument $document
      * @return string
      */
     protected function getCanonicalUrl(DOMDocument $document)
