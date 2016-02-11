@@ -77,7 +77,7 @@ abstract class Provider
     }
     
     /**
-     * Get picture of the day.
+     * Get current picture of the day.
      * @param integer $daysAgo
      * @throws \LogicException when no storage or/and http client is defined.
      * @throws ProviderException when provider cannot get picture.
