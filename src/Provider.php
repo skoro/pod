@@ -79,13 +79,14 @@ abstract class Provider
     /**
      * Get picture of the day.
      * @param integer $daysAgo
-     * @throws ProviderException when no storage or/and http client is defined.
+     * @throws \LogicException when no storage or/and http client is defined.
+     * @throws ProviderException when provider cannot get picture.
      * @return Pod
      */
     public function getPod($daysAgo = null)
     {
         if (!($storage = $this->getStorage())) {
-            throw new ProviderException('No picture storage defined.');
+            throw new \LogicException('No picture storage defined.');
         }
 
         if ($daysAgo === null) {
