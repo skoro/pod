@@ -89,13 +89,11 @@ abstract class Provider
             throw new \LogicException('No picture storage defined.');
         }
 
-        if ($daysAgo === null) {
-            $date = date('Y-m-d');
-        } else {
-            $date = (new \DateTime())
-                        ->sub(new \DateInterval('P' . (int) $daysAgo . 'D'))
-                        ->format('Y-m-d');
+        $date = $this->getCurrentDateTime();
+        if ($daysAgo !== null) {
+            $date->sub(new \DateInterval('P' . (int) $daysAgo . 'D'));
         }
+        $date = $date->format('Y-m-d');
         
         if (!($pod = $storage->loadFromDate($this->name, $date))) {
             $pod = $this->remote($daysAgo ? $date : null);
@@ -104,6 +102,14 @@ abstract class Provider
         }
         
         return $pod;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getCurrentDateTime()
+    {
+        return new \DateTime();
     }
     
     /**
