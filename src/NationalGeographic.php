@@ -42,6 +42,7 @@ class NationalGeographic extends Provider
         $document = $this->createDomDocument($html);
         
         $pod = $this->createPod();
+        $pod->date = $this->getDateFromDocument($document, '#pod_right .publication_time', '%B %d, %Y');
         $pod->title = $this->getPictureTitle($document);
         $pod->imageUrl = $this->getPictureUrl($document);
         $pod->desc = $this->getPictureInfo($document);

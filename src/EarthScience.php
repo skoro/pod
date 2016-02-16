@@ -40,6 +40,8 @@ class EarthScience extends Provider
         $document = $this->createDomDocument($html);
         
         $pod = $this->createPod();
+ 
+        $pod->date = $this->getDateFromDocument($document, '#alpha-inner .entry .date', '%B %d, %Y');
         
         // Title and base url.
         if (!($elem = $document->querySelector('#alpha-inner h3.entry-header a'))) {
