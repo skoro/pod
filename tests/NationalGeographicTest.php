@@ -17,19 +17,25 @@ class NationalGeographicTest extends PODTestCase
         $this->initProvider(new \skoro\pod\NationalGeographic());
     }
     
-    public function testTodayTitle()
+    public function testTitle()
     {
         $pod = $this->provider->getPod();
         $this->assertEquals('Sweat and Swing', $pod->title);
     }
     
-    public function testTodayImageUrl()
+    public function testDate()
+    {
+        $pod = $this->provider->getPod();
+        $this->assertEquals('2016-02-11', $pod->date);
+    }
+    
+    public function testImageUrl()
     {
         $pod = $this->provider->getPod();
         $this->assertEquals('http://images.nationalgeographic.com/wpf/media-live/photos/000/940/cache/muscle-beach-scene_94028_990x742.jpg', $pod->imageUrl);
     }
     
-    public function testTodayBaseUrl()
+    public function testBaseUrl()
     {
         $pod = $this->provider->getPod();
         $this->assertEquals('http://photography.nationalgeographic.com/photography/photo-of-the-day/muscle-beach-scene/', $pod->baseUrl);
