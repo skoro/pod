@@ -22,25 +22,25 @@ class EuronewsTest extends PODTestCase
     public function testTitle()
     {
         $pod = $this->provider->getPod();
-        $this->assertEquals('Cuteness', $pod->title);
+        $this->assertEquals('Gaga over Bowie', $pod->title);
     }
     
     public function testDate()
     {
         $pod = $this->provider->getPod();
-        $this->assertEquals('2016-02-15', $pod->date);
+        $this->assertEquals('2016-02-16', $pod->date);
     }
     
     public function testImageUrl()
     {
         $pod = $this->provider->getPod();
-        $this->assertEquals('http://static.euronews.com/articles/324257/924x616_324257.jpg', $pod->imageUrl);
+        $this->assertEquals('http://static.euronews.com/articles/324370/924x617_324370.jpg', $pod->imageUrl);
     }
     
     public function testBaseUrl()
     {
         $pod = $this->provider->getPod();
-        $this->assertEquals('http://www.euronews.com/picture-of-the-day/2016/02/15/cuteness/', $pod->baseUrl);
+        $this->assertEquals('http://www.euronews.com/picture-of-the-day/2016/02/16/gaga-over-bowie/', $pod->baseUrl);
     }
     
 }

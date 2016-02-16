@@ -48,22 +48,27 @@ class Euronews extends Provider
         }
         
         foreach ($element->childNodes as $child) {
-            switch ($child->tagName) {
-                case 'h1' :
-                    if (empty($pod->title)) {
-                        $pod->title = $child->textContent;
-                    }
-                    break;
-                    
-                case 'div' :
-                    if ($child->getAttribute('id') == 'image-caption') {
-                        $pod->desc = $child->textContent;
-                    }
-                    break;
-                    
-                case 'img' :
-                    $url = $child->getAttribute('src');
-                    break;
+            if ($child->nodeType == XML_ELEMENT_NODE) {
+                switch ($child->tagName) {
+                    case 'h1' :
+                        if (empty($pod->title)) {
+                            $pod->title = $child->textContent;
+                        }
+                        break;
+
+                    case 'div' :
+                        if ($child->getAttribute('id') == 'image-caption') {
+                            $pod->desc = $child->textContent;
+                        }
+                        break;
+
+                    case 'img' :
+                        $pod->imageUrl = $child->getAttribute('src');
+                        if (($pos = strpos($pod->imageUrl, '?')) !== false) {
+                            $pod->imageUrl = substr($pod->imageUrl, 0, $pos);
+                        }
+                        break;
+                }
             }
         }
         
