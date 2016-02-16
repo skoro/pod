@@ -97,7 +97,7 @@ abstract class Provider
         
         if (!($pod = $storage->loadFromDate($this->name, $date))) {
             $pod = $this->remote($daysAgo ? $date : null);
-            $pod->date = $date;
+            $pod->validate();
             $storage->save($pod);
         }
         
@@ -132,7 +132,7 @@ abstract class Provider
      * Create DOM document instance from html text.
      * @param string $html
      * @throws ProviderException when html cannot be parsed.
-     * @return DOMDocument
+     * @return \DOMDocument
      */
     public function createDomDocument($html)
     {
@@ -146,6 +146,28 @@ abstract class Provider
         }
         
         return $document;
+    }
+    
+    /**
+     * Parse document date to POD date.
+     * @param \DOMDocument $document
+     * @param string $selector CSS selector with date.
+     * @param string $format date format {@link http://docs.php.net/manual/en/function.strftime.php}
+     * @throws ProviderException when no date element found or format doesn't to date string.
+     * @return string date in format YYYY-MM-DD
+     */
+    protected function getDateFromDocument(\DOMDocument $document, $selector, $format)
+    {
+        if (!($elem = $document->querySelector($selector))) {
+            throw new ProviderException('Date element node is missing.');
+        }
+        
+        $text = $elem->textContent;
+        if (($date = strptime($text, $format)) === false) {
+            throw new ProviderException('Date "' . $text . '" does not matched to format: ' . $format);
+        }
+        
+        return sprintf('%d-%02d-%02d', 1900 + $date['tm_year'], $date['tm_mon'] + 1, $date['tm_mday']);
     }
     
     /**
