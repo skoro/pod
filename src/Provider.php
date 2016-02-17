@@ -163,6 +163,18 @@ abstract class Provider
         }
         
         $text = $elem->textContent;
+        return $this->parseDate($text, $format);
+    }
+    
+    /**
+     * Parse date from a string.
+     * @param string $text text contains a date.
+     * @param string $format
+     * @throws ProviderException
+     * @return string
+     */
+    protected function parseDate($text, $format)
+    {
         if (($date = strptime($text, $format)) === false) {
             throw new ProviderException('Date "' . $text . '" does not matched to format: ' . $format);
         }
