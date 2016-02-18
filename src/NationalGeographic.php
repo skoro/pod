@@ -20,14 +20,11 @@ class NationalGeographic extends Provider
      * Picture of the day link.
      */
     const URL = 'http://photography.nationalgeographic.com/photography/photo-of-the-day/';
-
+    
     /**
-     * @inheritdoc
+     * @var string
      */
-    public function __construct()
-    {
-        parent::__construct('nationalgeographic');
-    }
+    protected $name = 'nationalgeographic';
 
     /**
      * @inheritdoc

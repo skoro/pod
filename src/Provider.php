@@ -33,11 +33,13 @@ abstract class Provider
     protected $name;
     
     /**
-     * @param string $name provider name.
+     * Constructor.
      */
-    public function __construct($name)
+    public function __construct()
     {
-        $this->name = $name;
+        if (empty($this->name)) {
+            throw new \LogicException('Provider name must be already initialized.');
+        }
     }
 
     /**

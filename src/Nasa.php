@@ -23,6 +23,11 @@ class Nasa extends Provider
      * @var string
      */
     protected $apiKey;
+    
+    /**
+     * @var string
+     */
+    protected $name = 'nasa';
 
     /**
      * @param string $apiKey
@@ -30,7 +35,7 @@ class Nasa extends Provider
     public function __construct($apiKey)
     {
         $this->apiKey = $apiKey;
-        parent::__construct('nasa');
+        parent::__construct();
     }
     
     /**

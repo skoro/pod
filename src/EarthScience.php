@@ -24,12 +24,9 @@ class EarthScience extends Provider
     const URL = 'http://epod.usra.edu/';
     
     /**
-     * @inheritdoc
+     * @var string
      */
-    public function __construct()
-    {
-        parent::__construct('usra');
-    }
+    protected $name = 'usra';
     
     /**
      * @inheritdoc

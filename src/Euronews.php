@@ -22,14 +22,11 @@ class Euronews extends Provider
      * Picture of the day link.
      */
     const URL = 'http://www.euronews.com/picture-of-the-day/';
-    
+
     /**
-     * @inheritdoc
+     * @var string
      */
-    public function __construct()
-    {
-        parent::__construct('euronews');
-    }
+    protected $name = 'euronews';
     
     /**
      * @inheritdoc
