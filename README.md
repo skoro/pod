@@ -5,7 +5,7 @@ Get **POD** (picture of the day) from the following sources:
 
 * [Nasa](https://api.nasa.gov/planetary/apod) (requires an API key)
 * [National geographic](http://photography.nationalgeographic.com/photography/photo-of-the-day/)
-* [Earth Science Picture of the Day](http://epod.usra.edu/)
+* [Earth Science](http://epod.usra.edu/)
 * [Euronews](http://www.euronews.com/picture-of-the-day/)
 * [Biomedical](http://bpod.mrc.ac.uk/)
 * [BBC](http://www.bbc.com/news/in_pictures)
