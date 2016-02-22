@@ -29,8 +29,18 @@ class Biomedical extends Provider
     /**
      * @inheritdoc
      */
-    protected function parsePodDate(DOMDocument $document)
+    protected function finalizePod(Pod $pod, DOMDocument $document, $response)
     {
+        $container = $document->querySelector('.container .leftCol .section.main_profile');
+        if (!$this->container) {
+            throw new ProviderException('Container wrapper is missing in document.');
+        }
+        
+        foreach ($container->childNodes as $child) {
+            if ($child->nodeType != XML_ELEMENT_NODE) {
+                continue;
+            }
+        }
     }
     
 }
