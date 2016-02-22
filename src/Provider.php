@@ -68,6 +68,7 @@ abstract class Provider
     {
         $response = $this->httpRequest($this->url);
         $document = $this->createDomDocument($response);
+        $this->beforeParsePod($document, $response);
         $pod = $this->createPod();
         $pod->title = $this->parsePodTitle($document);
         $pod->date = $this->parsePodDate($document);
@@ -154,6 +155,16 @@ abstract class Provider
     protected function parsePodBaseUrl(DOMDocument $document)
     {
         return '';
+    }
+    
+    /**
+     * Invokes before parsing document.
+     * @param DOMDocument $document
+     * @param string $response
+     */
+    protected function beforeParsePod(DOMDocument $document, $response)
+    {
+        
     }
     
     /**
