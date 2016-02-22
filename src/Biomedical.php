@@ -19,7 +19,7 @@ class Biomedical extends Provider
     /**
      * Picture of the day link.
      */
-    const URL = 'http://bpod.mrc.ac.uk/';
+    protected $url = 'http://bpod.mrc.ac.uk/';
     
     /**
      * @var string
@@ -29,15 +29,8 @@ class Biomedical extends Provider
     /**
      * @inheritdoc
      */
-    protected function remote($date = null)
+    protected function parsePodDate(DOMDocument $document)
     {
-        $html = $this->httpClient(self::URL);
-        $document = $this->createDomDocument($html);
-        $pod = $this->createPod();
-        
-        
-        
-        return $pod;
     }
     
 }

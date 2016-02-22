@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Skorobogatko Alexei <skorobogatko.alexei@gmail.com>
  * @copyright 2016
@@ -15,54 +16,63 @@ namespace skoro\pod;
  * 
  * @author skoro
  */
-class EarthScience extends Provider
-{
-    
+class EarthScience extends Provider {
+
     /**
      * Picture of the day link.
      */
-    const URL = 'http://epod.usra.edu/';
-    
+    protected $url = 'http://epod.usra.edu/';
+
     /**
      * @var string
      */
     protected $name = 'usra';
+
+    /**
+     * @inheritdoc
+     */
+    protected function parsePodDate(DOMDocument $document) {
+        return $this->getDateFromDocument($document, '#alpha-inner .entry .date', '%B %d, %Y');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function parsePodImageUrl(DOMDocument $document) {
+        $elem = $document->querySelector('#alpha-inner div.entry-body a.asset-img-link');
+        return $elem ? $elem->getAttribute('href') : '';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function parsePodTitle(DOMDocument $document)
+    {
+        $elem = $document->querySelector('#alpha-inner h3.entry-header a');
+        return $elem ? $elem->textContent : '';
+    }
     
     /**
      * @inheritdoc
      */
-    protected function remote($date = null)
+    protected function parsePodBaseUrl(DOMDocument $document)
     {
-        $html = $this->httpRequest(self::URL);
-        $document = $this->createDomDocument($html);
-        
-        $pod = $this->createPod();
- 
-        $pod->date = $this->getDateFromDocument($document, '#alpha-inner .entry .date', '%B %d, %Y');
-        
-        // Title and base url.
-        if (!($elem = $document->querySelector('#alpha-inner h3.entry-header a'))) {
-            throw new ProviderException('Cannot get title and base url.');
-        }
-        $pod->baseUrl = $elem->getAttribute('href');
-        $pod->title = $elem->textContent;
+        $elem = $document->querySelector('#alpha-inner h3.entry-header a');
+        return $elem ? $elem->getAttribute('href') : '';
+    }
 
-        // Image url.
-        $elem = $document->querySelector('#alpha-inner div.entry-body a.asset-img-link');
-        if (!$elem) {
-            throw new ProviderException('Cannot get image element.');
-        }
-        $pod->imageUrl = $elem->getAttribute('href');
-        
-        // Optional. Description.
+    /**
+     * @inheritdoc
+     */
+    protected function parsePodDesc(DOMDocument $document) {
+        $desc = '';
         $divs = $document->querySelectorAll('#alpha-inner div.entry-body div');
         if ($divs) {
             foreach ($divs as $div) {
-                $pod->desc .= $div->textContent . PHP_EOL;
+                $desc .= $div->textContent . PHP_EOL;
             }
         }
-        
-        return $pod;
+        return $desc;
     }
 
 }

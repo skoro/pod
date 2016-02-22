@@ -14,14 +14,6 @@ namespace skoro\pod;
 abstract class Provider
 {
 
-    const YESTERDAY = 1;
-    const DAY_BEFORE_YESTERDAY = 2;
-
-    /**
-     * @var StorageInterface picture storage.
-     */
-    protected $storage;
-    
     /**
      * @var HttpClientInterface
      */
@@ -33,6 +25,11 @@ abstract class Provider
     protected $name;
     
     /**
+     * @var string link to a picture of the day resource.
+     */
+    protected $url;
+    
+    /**
      * Constructor.
      */
     public function __construct()
@@ -42,24 +39,6 @@ abstract class Provider
         }
     }
 
-    /**
-     * @param StorageInterface $storage
-     * @return Provider
-     */
-    public function setStorage(StorageInterface $storage)
-    {
-        $this->storage = $storage;
-        return $this;
-    }
-    
-    /**
-     * @return StorageInterface
-     */
-    public function getStorage()
-    {
-        return $this->storage;
-    }
-    
     /**
      * @param HttpClientInterface $httpClient
      * @return Provider
@@ -85,33 +64,19 @@ abstract class Provider
      * @throws ProviderException when provider cannot get picture.
      * @return Pod
      */
-    public function getPod($daysAgo = null)
+    public function getPod()
     {
-        if (!($storage = $this->getStorage())) {
-            throw new \LogicException('No picture storage defined.');
-        }
-
-        $date = $this->getCurrentDateTime();
-        if ($daysAgo !== null) {
-            $date->sub(new \DateInterval('P' . (int) $daysAgo . 'D'));
-        }
-        $date = $date->format('Y-m-d');
-        
-        if (!($pod = $storage->loadFromDate($this->name, $date))) {
-            $pod = $this->remote($daysAgo ? $date : null);
-            $pod->validate();
-            $storage->save($pod);
-        }
-        
+        $response = $this->httpRequest($this->url);
+        $document = $this->createDomDocument($response);
+        $pod = $this->createPod();
+        $pod->title = $this->parsePodTitle($document);
+        $pod->date = $this->parsePodDate($document);
+        $pod->imageUrl = $this->parsePodImageUrl($document);
+        $pod->desc = $this->parsePodDesc($document);
+        $pod->baseUrl = $this->parsePodBaseUrl($document);
+        $this->finalizePod($pod, $document, $response);
+        $pod->validate();
         return $pod;
-    }
-    
-    /**
-     * @return \DateTime
-     */
-    public function getCurrentDateTime()
-    {
-        return new \DateTime();
     }
     
     /**
@@ -120,7 +85,7 @@ abstract class Provider
      * @param string $desc
      * @return Pod
      */
-    public function createPod($title = '', $imageUrl = '', $desc = '')
+    protected function createPod($title = '', $imageUrl = '', $desc = '')
     {
         $pod = new Pod();
         $pod->title = $title;
@@ -134,9 +99,9 @@ abstract class Provider
      * Create DOM document instance from html text.
      * @param string $html
      * @throws ProviderException when html cannot be parsed.
-     * @return \DOMDocument
+     * @return DOMDocument
      */
-    public function createDomDocument($html)
+    protected function createDomDocument($html)
     {
         libxml_disable_entity_loader(true);
         libxml_use_internal_errors(true);
@@ -148,6 +113,58 @@ abstract class Provider
         }
         
         return $document;
+    }
+    
+    /**
+     * @param DOMDocument $document
+     * @return string
+     */
+    protected function parsePodTitle(DOMDocument $document)
+    {
+        return '';
+    }
+    
+    /**
+     * @param DOMDocument $document
+     * @return string
+     */
+    protected function parsePodDate(DOMDocument $document)
+    {
+        return '';
+    }
+    
+    /**
+     * @param DOMDocument $document
+     * @return string
+     */
+    protected function parsePodImageUrl(DOMDocument $document)
+    {
+        return '';
+    }
+    
+    /**
+     * @param DOMDocument $document
+     * @return string
+     */
+    protected function parsePodDesc(DOMDocument $document)
+    {
+        return '';
+    }
+    
+    protected function parsePodBaseUrl(DOMDocument $document)
+    {
+        return '';
+    }
+    
+    /**
+     * Invokes before validating Pod instance.
+     * @param Pod $pod
+     * @param DOMDocument $document
+     * @param string $response
+     */
+    protected function finalizePod(Pod $pod, DOMDocument $document, $response)
+    {
+        
     }
     
     /**
@@ -183,15 +200,6 @@ abstract class Provider
         
         return sprintf('%d-%02d-%02d', 1900 + $date['tm_year'], $date['tm_mon'] + 1, $date['tm_mday']);
     }
-    
-    /**
-     * Fetch picture from remote source.
-     * Descent classes must implements this method.
-     * @param string $date optional, fetch remote POD for specific date in format YYYY-MM-DD.
-     * @throws ProviderException see descent classes.
-     * @return Pod
-     */
-    abstract protected function remote($date = null);
     
     /**
      * Performs http GET request.

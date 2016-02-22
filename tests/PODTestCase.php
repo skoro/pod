@@ -25,7 +25,6 @@ class PODTestCase extends PHPUnit_Framework_TestCase
     {
         $this->provider = $provider;
         $this->provider->setHttpClient(new FakeHttpClient());
-        $this->provider->setStorage(new skoro\pod\ArrayStorage());
     }
     
 }

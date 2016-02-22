@@ -19,7 +19,7 @@ class NationalGeographic extends Provider
     /**
      * Picture of the day link.
      */
-    const URL = 'http://photography.nationalgeographic.com/photography/photo-of-the-day/';
+    protected $url = 'http://photography.nationalgeographic.com/photography/photo-of-the-day/';
     
     /**
      * @var string
@@ -29,31 +29,15 @@ class NationalGeographic extends Provider
     /**
      * @inheritdoc
      */
-    protected function remote($date = null)
+    protected function parsePodDate(DOMDocument $document)
     {
-        if ($date !== null) {
-            throw new ProviderException('This provider supports only today picture.');
-        }
-        
-        $html = $this->httpRequest(self::URL);
-        $document = $this->createDomDocument($html);
-        
-        $pod = $this->createPod();
-        $pod->date = $this->getDateFromDocument($document, '#pod_right .publication_time', '%B %d, %Y');
-        $pod->title = $this->getPictureTitle($document);
-        $pod->imageUrl = $this->getPictureUrl($document);
-        $pod->desc = $this->getPictureInfo($document);
-        $pod->baseUrl = $this->getCanonicalUrl($document);
-        
-        return $pod;
+        return $this->getDateFromDocument($document, '#pod_right .publication_time', '%B %d, %Y');
     }
     
     /**
-     * Picture title.
-     * @param DOMDocument $document
-     * @return string
+     * @inheritdoc
      */
-    protected function getPictureTitle(DOMDocument $document)
+    protected function parsePodTitle(DOMDocument $document)
     {
         if (!($elem = $document->querySelector('#page_head h1'))) {
             throw new ProviderException('Picture title is missing.');
@@ -62,11 +46,9 @@ class NationalGeographic extends Provider
     }
     
     /**
-     * Get picture direct link.
-     * @param DOMDocument $document
-     * @return string
+     * @inheritdoc
      */
-    protected function getPictureUrl(DOMDocument $document)
+    protected function parsePodImageUrl(DOMDocument $document)
     {
         if (!($elem = $document->querySelector('#content_top .primary_photo img'))) {
             throw new ProviderException('Picture is missing');
@@ -79,11 +61,9 @@ class NationalGeographic extends Provider
     }
 
     /**
-     * Get picture text.
-     * @param DOMDocument $document
-     * @return string
+     * @inheritdoc
      */
-    protected function getPictureInfo(DOMDocument $document)
+    protected function parsePodDesc(DOMDocument $document)
     {
         $caption = $document->getElementById('caption');
         $text = '';
@@ -100,11 +80,9 @@ class NationalGeographic extends Provider
     }
     
     /**
-     * Get url of picture of the day page.
-     * @param DOMDocument $document
-     * @return string
+     * @inheritdoc
      */
-    protected function getCanonicalUrl(DOMDocument $document)
+    protected function parsePodBaseUrl(DOMDocument $document)
     {
         $url = '';
         $elements = $document->getElementsByTagName('link');

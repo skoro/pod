@@ -21,7 +21,7 @@ class Euronews extends Provider
     /**
      * Picture of the day link.
      */
-    const URL = 'http://www.euronews.com/picture-of-the-day/';
+    protected $url = 'http://www.euronews.com/picture-of-the-day/';
 
     /**
      * @var string
@@ -31,21 +31,15 @@ class Euronews extends Provider
     /**
      * @inheritdoc
      */
-    protected function remote($date = null)
+    protected function finalizePod(Pod $pod, DOMDocument $document, $response)
     {
-        $html = $this->httpRequest(self::URL);
-        $document = $this->createDomDocument($html);
-        
-        $pod = $this->createPod();
-        $pod->date = $this->getDateFromDocument($document, '#potd-list-wrap .new-row .date', '%d/%m/%Y');
-        
         // Wrapper element for date and base url.
         $element = $document->querySelector('#potd-list-wrap .new-row a.selected');
         if ($element && $element->hasChildNodes()) {
             // Create absolute url from relative.
             $href = parse_url($element->getAttribute('href'));
             if (empty($href['scheme'])) {
-                $url = parse_url(self::URL);
+                $url = parse_url($this->url);
                 $pod->baseUrl = $url['scheme'] . '://' . $url['host'] . $href['path'];
             }
             // Search date element.
@@ -87,7 +81,6 @@ class Euronews extends Provider
             }
         }
         
-        return $pod;
     }
  
 }
