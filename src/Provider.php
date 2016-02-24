@@ -162,7 +162,7 @@ abstract class Provider
      * @param DOMDocument $document
      * @param string $response
      */
-    protected function beforeParsePod(DOMDocument $document, $response)
+    protected function beforeParsePod(DOMDocument $document, &$response)
     {
         
     }
@@ -180,7 +180,7 @@ abstract class Provider
     
     /**
      * Parse document date to POD date.
-     * @param \DOMDocument $document
+     * @param DOMDocument $document
      * @param string $selector CSS selector with date.
      * @param string $format date format {@link http://docs.php.net/manual/en/function.strftime.php}
      * @throws ProviderException when no date element found or format doesn't to date string.
