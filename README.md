@@ -8,6 +8,7 @@ Get **POD** (picture of the day) from the following sources:
 * [Earth Science](http://epod.usra.edu/)
 * [Euronews](http://www.euronews.com/picture-of-the-day/)
 * [Biomedical](http://bpod.mrc.ac.uk/)
+* [The Telegraph](http://www.telegraph.co.uk/news/picturegalleries/picturesoftheday/)
 * [BBC](http://www.bbc.com/news/in_pictures)
 * [The Wall Street Journal](http://projects.wsj.com/pod/en)
 
